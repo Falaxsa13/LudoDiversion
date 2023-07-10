@@ -1,0 +1,625 @@
+import os
+import readchar
+from random import randint
+import time
+import csv
+
+
+# Funcion para borrar el contenido de la consola
+def clear_console():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def main_menu():
+    clear_console()
+    selected_option = 1
+
+    while True:
+
+        print_menu(selected_option)
+        key = readchar.readkey()
+
+        if key == readchar.key.UP:  # Tecla flecha hacia arriba
+            selected_option = max(1, selected_option - 1)
+        elif key == readchar.key.DOWN:  # Tecla flecha hacia abajo
+            selected_option = min(4, selected_option + 1)
+        elif key == readchar.key.ENTER:  # Tecla enter
+
+            if selected_option == 1:
+                return 1
+            elif selected_option == 2:
+                return 2
+            elif selected_option == 3:
+                return 3
+            else:
+                return -1
+
+
+# Funcion para imprimir el menu principal
+def print_menu(selected_option):
+    clear_console()
+    menu = '''
++--------------------------------------------------------------------------------------+
+|                                                                                      |
+|                ░█░░░█░█░█▀▄░█▀█░░░█▀▄░▀█▀░█░█░█▀▀░█▀▄░█▀▀░▀█▀░█▀█░█▀█                |
+|                ░█░░░█░█░█░█░█░█░░░█░█░░█░░▀▄▀░█▀▀░█▀▄░▀▀█░░█░░█░█░█░█                |
+|                ░▀▀▀░▀▀▀░▀▀░░▀▀▀░░░▀▀░░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀                |
+|                                                                                      |  
+|                                                                                      |
+|                             _____________________________                            |
+|                           ((                            ))                           |
+|                            ))    1.Empezar el juego    ((                            |
+|                           ((     2.Instrucciones        ))                           |
+|                            ))    3.Record              ((                            |
+|                           ((     4.Salir                ))                           |
+|                            ))__________________________((                            |
+|                                                                                      |
+|                                                                                      |
+|                                 .-------.    ______                                  |
+|                                /   o   /|   /\     \                                 |
+|                               /_______/o|  /o \  o  \                                |
+|                               | o     | | /   o\_____\                               |
+|                               |   o   |o/ \o   /o    /                               |
+|                               |     o |/   \ o/  o  /                                |
+|                               '-------'     \/____o/                                 |
+|                                                                                      |
+|                                                                                      |
+|                                                                                      |
+|                                                                                      |
++--------------------------------------------------------------------------------------+'''
+    # Separa la string por '\n', y los convierte a una lista
+    menu_lines = menu.split('\n')
+
+    menu_lines[selected_option + 9] = menu_lines[selected_option + 9][:32] + '-> ' + menu_lines[selected_option + 9][35:]
+
+    print('\n'.join(menu_lines))
+
+
+def print_typegame(selected_option):
+    clear_console()
+    typescreen = '''
++--------------------------------------------------------------------------------------+
+|                                                                                      |
+|                ░█░░░█░█░█▀▄░█▀█░░░█▀▄░▀█▀░█░█░█▀▀░█▀▄░█▀▀░▀█▀░█▀█░█▀█                |
+|                ░█░░░█░█░█░█░█░█░░░█░█░░█░░▀▄▀░█▀▀░█▀▄░▀▀█░░█░░█░█░█░█                |
+|                ░▀▀▀░▀▀▀░▀▀░░▀▀▀░░░▀▀░░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀                |
+|                                                                                      |
+|                                                                                      |
+|                            ░█▀█░▀█░░░░░█░█░█▀▀░░░░░█▀█░▀▀▄                           |
+|                            ░█▀▀░░█░░░░░▀▄▀░▀▀█░░░░░█▀▀░▄▀░                           |
+|                            ░▀░░░▀▀▀░░░░░▀░░▀▀▀░░░░░▀░░░▀▀▀                           |
+|                                                                                      |
+|                                                                                      |
+|                            ░█▀█░▀█░░░░░█░█░█▀▀░░░░░█▀█░▀█▀                           |
+|                            ░█▀▀░░█░░░░░▀▄▀░▀▀█░░░░░█▀█░░█░                           |
+|                            ░▀░░░▀▀▀░░░░░▀░░▀▀▀░░░░░▀░▀░▀▀▀                           |
+|                                                                                      |
+|   	                         ██                  ░░                                |
+|   	                         ██████          ░░░░░░                                |
+|   	                           ████████  ░░░░░░░░░                                 |
+|   	                            █████░░░███░░░░░░░░                                |
+|   	                            ░░█░░░░░███████░░░░                                |
+|   	                         ░░░░░█░░░░░███████████                                |
+|   	                         ░░░░░█░░░░░███████████                                |
+|   	                         ░░░░░░░░░░░████████  █                                |
+|   	                         ░░░░░░░░░░░█████████                                  |
+|   	                         ░░░░░░░        ███████                                |
+|   	                         ░░░                ███                                |
++--------------------------------------------------------------------------------------+'''
+    menu_lines = typescreen.split('\n')
+    menu_lines[selected_option + 8] = menu_lines[selected_option + 8][:22] + '-> ' + menu_lines[selected_option + 8][25:]
+    print('\n'.join(menu_lines))
+
+
+def typegame():
+    selected_option = 1
+
+    while True:
+        print_typegame(selected_option)
+        key = readchar.readkey()
+        if key == readchar.key.UP:
+            selected_option = max(1, selected_option - 6)
+        elif key == readchar.key.DOWN:
+            selected_option = min(6, selected_option + 6)
+        elif key == readchar.key.ENTER:
+            if selected_option == 1:
+                return 1
+            elif selected_option == 6:
+                return 2
+
+
+def drawname(key1, key2, i, j):
+    clear_console()
+
+    names = '''
++--------------------------------------------------------------------------------------+
+|                                                                                      |
+|                ░█░░░█░█░█▀▄░█▀█░░░█▀▄░▀█▀░█░█░█▀▀░█▀▄░█▀▀░▀█▀░█▀█░█▀█                |
+|                ░█░░░█░█░█░█░█░█░░░█░█░░█░░▀▄▀░█▀▀░█▀▄░▀▀█░░█░░█░█░█░█                |
+|                ░▀▀▀░▀▀▀░▀▀░░▀▀▀░░░▀▀░░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀                |
+|                                                                                      |  
+|      Nombre de los jugadores:                                                        |
+|                                                                                      |
+|  Jugador:                                                                            |
+|     1   :                                                                            |
+|                                                                                      |
+|  Jugador:                                                                            |
+|     2   :                                                                            |
+|                                                                                      |
+|                                                                                      |
+|                                                                                      |
+|                  ⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⣀⣀⠤⠤⢄⣀⡀⡀⡀⡀⡀⡀⡀⡀⡀⣀⣠⣤⣤⣀⣀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀                  |
+|                  ⡀⡀⡀⡀⡀⡀⡀⡀⡀⢀⣤⣶⣾⣿⣶⣾⡿⣿⣿⣿⣶⣤⡓⡀⡀⡀⡀⢀⣴⣿⡿⣥⣿⣿⣿⣿⣿⣿⣦⣄⡀⡀⡀⡀⡀⡀⡀⡀⡀⡀                  |
+|                  ⡀⡀⡀⡀⡀⡀⡀⡀⣼⣿⣿⢿⠟⠙⠁⠈⠑⣹⣿⣿⣿⣿⣿⣯⡄⡀⣴⣿⣿⣿⣿⣿⣟⣳⠍⠙⠻⠿⣿⣿⣿⣷⡄⡀⡀⡀⡀⡀⡀⡀                  |
+|                  ⡀⡀⢀⣤⣶⣿⢹⣿⣿⣿⣷⣬⣤⣤⣶⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣀⣀⣈⣟⣿⣷⢫⠶⣤⡀⡀⡀⡀                  |
+|                  ⡀⢠⢻⣋⣤⣶⡜⡿⡝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⣿⣿⣿⣿⢸⣿⡀⣿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣄⡀⠉⡗⣀⡀                  |
+|                  ⡀⢸⣏⣿⣿⣿⢗⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⣿⣿⣿⢿⣿⣷⡸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⣗⠿⣿⣿⣷⡘⣯⡀                  |
+|                  ⡀⠈⣟⣛⡵⠛⢁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⡀⣿⣿⠁⠈⣿⣿⣞⣿⣿⡟⠛⠛⠛⠛⠛⢿⣿⣿⣿⣼⠾⠯⣷⣭⣋⢠⡞⡀                  |    
+|                  ⡀⡀⢻⣷⣾⣿⣿⣿⣿⠟⠉⡀⡀⡀⡀⡀⠉⠛⢿⣿⣿⠿⠋⡀⡀⡀⡀⠻⣿⣿⣿⠃⡀⡀⡀⡀⡀⡀⡀⠙⣿⣿⣤⣄⡘⡟⠏⡿⡀⡀                  |
+|                                                                                      |
+|                                                                                      |
+|                                                                                      |
++--------------------------------------------------------------------------------------+'''
+    menu_lines = names.split('\n')
+    menu_lines[10] = menu_lines[10][:11] + " " + key1 + "  " + menu_lines[10][13 + i:]
+    menu_lines[13] = menu_lines[13][:11] + " " + key2 + "  " + menu_lines[13][13 + j:]
+
+    print('\n'.join(menu_lines))
+
+
+def p1_p2():
+    i = 1
+    j = 1
+    key1 = ""
+    key2 = ""
+    enter1 = False
+    drawname(key1, key2, i, j)
+    while True:
+        key = readchar.readkey()
+        if key == readchar.key.UP or key == readchar.key.DOWN or key == readchar.key.RIGHT or \
+                key == readchar.key.LEFT or \
+                (not enter1 and key1 == "" and key == readchar.key.BACKSPACE) or \
+                (enter1 and key2 == "" and key == readchar.key.BACKSPACE):
+            continue
+
+        if key == readchar.key.ENTER and enter1:
+            return key1, key2
+        if key == readchar.key.ENTER:
+            enter1 = True
+            continue
+        if enter1:
+            if key == readchar.key.BACKSPACE:  # Tecla de borrar
+                j -= 1
+                key2 = key2[:-1]
+            else:
+
+                if len(key2) == 17:
+                    key2 = key2
+                else:
+                    j += 1
+                    key2 += key
+        elif not enter1:
+            if key == readchar.key.BACKSPACE:  # Tecla de borrar
+                i -= 1
+                key1 = key1[:-1]
+            else:
+                if len(key1) == 17:
+                    key1 = key1
+                else:
+                    i += 1
+                    key1 += key
+        drawname(key1, key2, i, j)
+
+
+def p1_ia():
+    i = 1
+    j = 3
+    key1 = ""
+    key2 = "IA"
+    enter1 = False
+    drawname(key1, key2, i, j)
+    while True:
+        key = readchar.readkey()
+        if key == readchar.key.UP or key == readchar.key.DOWN or key == readchar.key.RIGHT or \
+                key == readchar.key.LEFT or \
+                (not enter1 and key1 == "" and key == readchar.key.BACKSPACE) or \
+                (enter1 and key2 == "" and key == readchar.key.BACKSPACE):
+            continue
+
+        if key == readchar.key.BACKSPACE:  # Tecla de borrar
+            i -= 1
+            key1 = key1[:-1]
+        elif key == readchar.key.ENTER:
+            return key1
+        else:
+            if len(key1) == 17:
+                key1 = key1
+            else:
+                i += 1
+                key1 += key
+
+        drawname(key1, key2, i, j)
+
+
+def instrucciones():
+    clear_console()
+    menu = """
++--------------------------------------------------------------------------------------+
+|                                                                                      |
+|                                                                                      |
+|                                    INSTRUCCIONES                                     |
+|                                                                                      |
+|                                                                                      |
+| * Este juego de mesa consiste en trasladar una ficha desde el inicio hasta la meta.  |
+|                                                                                      |
+| * A cada jugador en su turno, puede lanzar un dado y trasladar su ficha el número    |
+|   de espacios indicados por el dado.                                                 |
+|                                                                                      |
+| * Si el dado indica el numero 6, el jugador no pierde su turno y vuelve a lanzar.    |
+|                                                                                      |
+| * La ficha debe llegar a la meta con la cuenta exacta, de lo contrario tiene que     |
+|   retroceder las posiciones restantes.                                               |
+|                                                                                      |
+| * Si la ficha de un jugador cae en una casilla ocupada , envia la ficha del          |
+|   contrincante a la posicion inicial.                                                |
+|                                                                                      |
+| * Si la ficha cae en una casilla de BONUS, el jugador no pierde su turno y vuelve    |
+|   a lanzar.                                                                          |
+|                                                                                      |
+| * Formas de lanzar el dado                                                           |
+|   1. Normal -> Números del 1 - 6, con las mismas probabilidades                      |
+|   2. Debil -> Números del 1 - 3, con las mismas probabilidades                       |
+|   3. Fuerte -> Números del 4 - 6, coin las mismas probabilidades                     |
+|                                                                                      |
++--------------------------------------------------------------------------------------+"""
+    print(menu)
+    key = readchar.readkey()
+    if key == readchar.key.ENTER:
+        main()
+
+
+def record():
+    clear_console()
+    print("Jugadores que han sido victorosos enfrentando al CPU: ")
+    with open("../Jugadores Victoriosos.csv", 'r') as archivo:
+        reader = csv.reader(archivo)
+        for row in reader:
+            for palabra in row:
+                print(palabra)
+    print("Presiona enter para salir al menu principal ")
+    while True:
+        key = readchar.readkey()
+        if key == readchar.key.ENTER:
+            main()
+
+
+def save_victory(name):
+
+    with open("../Jugadores Victoriosos.csv", 'a', newline='') as archivo:
+        writer = csv.writer(archivo)
+        writer.writerow([name])
+
+
+def gameAI(player1, player2):
+
+    pos1 = 0
+    pos2 = 0
+    p1Turn = True
+    P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, 0)
+
+    while True:
+
+        if p1Turn:
+            move = dice(pos1, pos2, 7, p1Turn, player1, player2, 0)
+        else:
+            time.sleep(1.5)
+            move = randint(1, 6)
+
+        # Manejar bonuses y extensiones
+        if p1Turn:
+            pos1 += move
+
+            if pos1 == 8 or pos1 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = False
+        else:
+            pos2 += move
+
+            if pos2 == 8 or pos2 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = True
+
+        reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        if pos1 > 20:
+            pos1 = 40 - pos1
+            reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        elif pos2 > 20:
+            pos2 = 40 - pos2
+            reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 1 come
+        if reset == -1:
+            pos2 = 0
+            P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 2 come
+        elif reset == 1:
+            pos1 = 0
+            P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+
+        # Sistema de victoria
+        if pos1 == 20:
+            return player1
+        elif pos2 == 20:
+            return player2
+
+
+def P1P2menu(pos1, pos2, option, p1Turn, name1, name2, move):
+    reset = 0
+    clear_console()
+    gamescreen = """
++--------------------------------------------------------------------------------------+
+|                       |                                      |                       |
+|                       |              20-META-20              |                       |
+|                       |------------------19------------------|                       |
+|                       |------------------18------------------|                       |
+|                       |------------------17------------------|                       |
+|                       |------------------16------------------|                       |
+|                       |------------------15------------------|                       |
+|                       |--------------14-BONUS-14-------------|                       |
+|                       |------------------13------------------|                       |
+|                       |------------------12------------------|                       |
+|                       |------------------11------------------|                       |
+|                       |------------------10------------------|                       |
+|                       |------------------09------------------|                       |
+|                       |--------------08-BONUS-08-------------|                       |
+|                       |------------------07------------------|                       |
+|                       |------------------06------------------|                       |
+|                       |------------------05------------------|                       |
+|                       |------------------04------------------|                       |
+|                       |------------------03------------------|                       |
+|                       |------------------02------------------|                       |
+|                       |------------------01------------------|                       |
+|                       |                INICIO                |                       |
+|-----------------------|--------------------------------------|-----------------------|
+|                                                                                      |
+|         Dado Normal                  Dado Debil                  Dado Fuerte         |
+|     ( 1, 2, 3, 4, 5, 6 )            ( 1, 2, 3 )                  ( 4, 5, 6 )         |
++--------------------------------------------------------------------------------------+"""
+
+    menu_lines = gamescreen.split('\n')
+
+    # Escribir el texto de informacion
+    if option == 7:
+        choice = "NORMAL"
+    elif option == 36:
+        choice = "DEBIL"
+    else:
+        choice = "FUERTE"
+
+    # Tabla de informacion de las zonas exteriores
+    if p1Turn:
+        menu_lines[7] = menu_lines[7][:4] + "TURNO DEL JUGADOR:" + menu_lines[7][22:]
+        menu_lines[8] = menu_lines[8][:4] + name1 + menu_lines[8][4 + len(name1):]
+
+        menu_lines[13] = menu_lines[13][:4] + "DADO ELEGIDO:" + menu_lines[13][17:]
+        menu_lines[14] = menu_lines[14][:4] + choice + menu_lines[14][4 + len(choice):]
+
+        menu_lines[19] = menu_lines[19][:4] + "POSICION:" + menu_lines[19][4+len("POSICION:"):]
+        menu_lines[20] = menu_lines[20][:4] + f"(+{move})->[{pos1}]" + menu_lines[20][4 + len(f"(+{move})->[{pos1}]"):]
+
+    else:
+        menu_lines[7] = menu_lines[7][:67] + "TURNO DEL JUGADOR:" + menu_lines[7][68+len("TURNO DEL JUGADOR"):]
+        menu_lines[8] = menu_lines[8][:67] + name2 + menu_lines[8][67 + len(name2):]
+
+        menu_lines[13] = menu_lines[13][:67] + "DADO ELEGIDO:" + menu_lines[13][67+len("DADO ELEGIDO:"):]
+        menu_lines[14] = menu_lines[14][:67] + choice + menu_lines[14][67 + len(choice):]
+
+        menu_lines[19] = menu_lines[19][:67] + "POSICION:" + menu_lines[19][67+len("POSICION:"):]
+        menu_lines[20] = menu_lines[20][:67] + f"(+{move})->[{pos2}]" + menu_lines[20][67 + len(f"(+{move})->[{pos1}]"):]
+
+    # Cursor del dado
+    menu_lines[26] = menu_lines[26][:option] + '-> ' + menu_lines[26][3 + option:]
+
+    # Movimiento de las fichas
+
+    if pos1 == pos2:  # Cuando caen en la misma casilla
+        menu_lines[23 - pos1] = menu_lines[23 - pos1][:33] + "O" + \
+                                menu_lines[23 - pos1][34:55] + "X" + menu_lines[23 - pos1][56:]
+
+        # El Jugador 1 comio al Jugador 2
+        if not p1Turn and pos2 != 0:
+            for i in range(pos2, -1, -1):
+                if i >= 0:
+                    menu_lines[23 - i] = menu_lines[23 - i][:55] + "X" + menu_lines[23 - i][56:]
+                    print('\n'.join(menu_lines))
+                    time.sleep(0.2)
+                    menu_lines[23 - i] = menu_lines[23 - i][:55] + "-" + menu_lines[23 - i][56:]
+                    clear_console()
+                else:
+                    break
+            reset = -1
+
+        # El jugador 2 comio al jugador 1
+        elif p1Turn and pos1 != 0:
+            for i in range(pos1, -1, -1):
+                if i >= 0:
+                    menu_lines[23 - i] = menu_lines[23 - i][:33] + "O" + menu_lines[23 - i][34:]
+                    print('\n'.join(menu_lines))
+                    time.sleep(0.2)
+                    menu_lines[23 - i] = menu_lines[23 - i][:33] + "-" + menu_lines[23 - i][34:]
+                    clear_console()
+                else:
+                    break
+            reset = 1
+
+    elif pos1 != pos2:  # Cuando estan en distintas casillas
+        menu_lines[23 - pos1] = menu_lines[23 - pos1][:33] + "O" + menu_lines[23 - pos1][34:]
+        menu_lines[23 - pos2] = menu_lines[23 - pos2][:55] + "X" + menu_lines[23 - pos2][56:]
+
+    # Animacion para casillas mayores a 20
+    if pos1 > 20:
+        pos1c = 3
+        menu_lines[pos1c] = menu_lines[pos1c][:33] + "O" + menu_lines[pos1c][34:]
+        for i in range(pos1c, 4 + (pos1 % 20)):
+            menu_lines[i] = menu_lines[i][:33] + "O" + menu_lines[i][34:]
+            print('\n'.join(menu_lines))
+            time.sleep(0.3)
+            menu_lines[i] = menu_lines[i][:33] + "-" + menu_lines[i][34:]
+            clear_console()
+
+    elif pos2 > 20:
+        pos2c = 3
+        menu_lines[pos2c] = menu_lines[pos2c][:55] + "X" + menu_lines[pos2c][56:]
+        for i in range(pos2c, 4 + (pos2 % 20)):
+            menu_lines[i] = menu_lines[i][:55] + "X" + menu_lines[i][56:]
+            print('\n'.join(menu_lines))
+            time.sleep(0.3)
+            menu_lines[i] = menu_lines[i][:55] + "-" + menu_lines[i][56:]
+            clear_console()
+
+    print('\n'.join(menu_lines))
+    return reset
+
+
+def game(player1, player2):
+    pos1 = 0
+    pos2 = 0
+    p1Turn = True
+    P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, 0)
+
+    while True:
+
+        move = dice(pos1, pos2, 7, p1Turn, player1, player2, 0)
+
+        # Manejar bonuses y extensiones
+        if p1Turn:
+            pos1 += move
+
+            if pos1 == 8 or pos1 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = False
+        else:
+            pos2 += move
+
+            if pos2 == 8 or pos2 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = True
+
+        reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        if pos1 > 20:
+            pos1 = 40 - pos1
+            reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        elif pos2 > 20:
+            pos2 = 40 - pos2
+            reset = P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 1 come
+        if reset == -1:
+            pos2 = 0
+            P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 2 come
+        elif reset == 1:
+            pos1 = 0
+            P1P2menu(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Sistema de victoria
+        if pos1 == 20:
+            return player1
+        elif pos2 == 20:
+            return player2
+
+
+def dice(pos1, pos2, option, p1Turn, player1, player2, move):
+    key = ""
+    P1P2menu(pos1, pos2, option, p1Turn, player1, player2, 0)
+    while key != readchar.key.ENTER:
+        key = readchar.readkey()
+        if key == readchar.key.RIGHT:
+            if option == 7:
+                option = 36
+
+            elif option == 36:
+                option = 64
+            else:
+                option = 64
+        elif key == readchar.key.LEFT:
+            if option == 64:
+                option = 36
+
+            elif option == 36:
+                option = 7
+
+            else:
+                option = 7
+
+        P1P2menu(pos1, pos2, option, p1Turn, player1, player2, move)
+
+    if option == 7:
+        move = randint(1, 6)
+    elif option == 36:
+        move = randint(1, 3)
+    else:
+        move = randint(4, 6)
+
+    P1P2menu(pos1, pos2, option, p1Turn, player1, player2, move)
+    time.sleep(1)
+
+    return move
+
+
+def main():
+    try:
+        with open("../Jugadores Victoriosos.csv", 'r'):
+            pass
+    except FileNotFoundError:
+        with open("../Jugadores Victoriosos.csv", 'w', newline=''):
+            pass
+
+    option = main_menu()  # Guardar el valor de la opcion que seleccionaste en el menu principal
+    if option == 1:  # Se selecciono "Empezar Juego"
+        if typegame() == 1:  # Se selecciono "Player vs Player"
+            nombres = p1_p2()  # Se consigue el nombre de los jugadores
+            print(f"JUGADOR GANADOR: {game(nombres[0], nombres[1])}")
+
+        else:  # Se selecciono "Player vs AI"
+            nombre = p1_ia()  # Se consigue el nombre del jugador
+            jugador_ganador = gameAI(nombre, 'AI')
+            print(f"JUGADOR GANADOR: {jugador_ganador}")   # Se printea el nombre del jugador ganador
+            if jugador_ganador == nombre:
+                save_victory(nombre)
+            print()
+            print()
+            print("Presiona enter para salir al menu principal ")
+            while True:
+                key = readchar.readkey()
+                if key == readchar.key.ENTER:
+                    main()
+
+    elif option == 2:  # Se selecciono "Instrucciones"
+        instrucciones()
+
+    elif option == 3:  # Se selecciono "Record"
+        record()
+    else:  # Se selecciono "Salir"
+        return -1
+
+
+if __name__ == '__main__':
+    main()
+
+
