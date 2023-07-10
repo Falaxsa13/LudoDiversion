@@ -4,8 +4,7 @@ import drawing
 
 def main_menu():
 
-    from main import clear_console
-    clear_console()
+    drawing.clear_console()
     selected_option = 1
 
     while True:
@@ -23,20 +22,12 @@ def main_menu():
         # Tecla enter
         elif key == readchar.key.ENTER:
 
-            match selected_option:
-
-                case 1: return 1
-                case 2: return 2
-                case 3: return 3
-                case 4: return 4
-                case 5: return 5
-                case 6: return -1
+            return selected_option
 
 
 def print_menu(selected_option):
 
-    from main import clear_console
-    clear_console()
+    drawing.clear_console()
     menu = drawing.main_menu  # Pantalla Principal
     menu_lines = menu.split('\n')
     menu_lines[selected_option + 9] = menu_lines[selected_option + 9][:32] + '-> ' + menu_lines[selected_option + 9][35:]

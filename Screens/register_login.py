@@ -1,16 +1,14 @@
 import drawing
 import readchar
-from save_player import save_player, verify_player
+from player_data import save_player, verify_player
 
 
 def player_datamenu(menu):
 
-    from main import clear_console
-
     name = email = dateMY = sup = ""
     i = j = k = 1
     confirm1 = confirm2 = False
-    clear_console()
+    drawing.clear_console()
     print(menu)
 
     while True:
@@ -73,9 +71,7 @@ def player_datamenu(menu):
 
 def print_datamenu(menu, name, email, date, i, j, k, sup):
 
-    from main import clear_console
-
-    clear_console()
+    drawing.clear_console()
 
     menu_lines = menu.split('\n')
     menu_lines[9] = menu_lines[9][:30] + " " + name + "  " + menu_lines[9][32 + i:]

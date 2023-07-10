@@ -1,13 +1,13 @@
 import readchar
-from save_player import fetch_player
+from player_data import fetch_player
+import drawing
 
 
 def player_datamenu(menu):
-    from main import clear_console
 
     email = sup = ""
     i = 1
-    clear_console()
+    drawing.clear_console()
     print(menu)
 
     while True:
@@ -36,16 +36,14 @@ def player_datamenu(menu):
                 break
             else:
                 print_data(menu, player)
-                email = ""
                 return
 
         print_menu(menu, email, i, sup)
 
 
 def print_menu(menu, email, i, sup):
-    from main import clear_console
 
-    clear_console()
+    drawing.clear_console()
 
     menu_lines = menu.split('\n')
 
@@ -56,22 +54,21 @@ def print_menu(menu, email, i, sup):
 
 
 def print_data(menu, player):
-    from main import clear_console
 
     name = player["username"]
-    date = player["date"]
+    date = player["creation_date"]
     wins = str(player["wins"])
     num_movements = str(player["num_movements"])
     last_num_movements = str(player["last_num_movements"])
 
-    clear_console()
+    drawing.clear_console()
 
     menu_lines = menu.split('\n')
 
     menu_lines[17] = menu_lines[17][:30] + " " + name + menu_lines[17][31+len(name):]
     menu_lines[18] = menu_lines[18][:33] + " " + wins + menu_lines[18][34 + len(wins):]
     menu_lines[19] = menu_lines[19][:43] + " " + num_movements + menu_lines[19][44 + len(num_movements):]
-    menu_lines[20] = menu_lines[20][:43] + " " + last_num_movements + menu_lines[20][44 + len(last_num_movements):]
-    menu_lines[21] = menu_lines[21][:29] + " " + f"{date[:2]}/{date[:2]}" + menu_lines[21][29 + len(date):]
+    menu_lines[20] = menu_lines[20][:29] + " " + f"{date[:2]}/{date[2:]}" + menu_lines[20][31 + len(date):]
+    menu_lines[22] = menu_lines[22][:22] + " " + last_num_movements + menu_lines[22][23 + len(last_num_movements):]
 
     print('\n'.join(menu_lines))

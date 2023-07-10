@@ -4,8 +4,7 @@ import drawing
 
 def print_typegame(selected_option):
 
-    from main import clear_console
-    clear_console()
+    drawing.clear_console()
     typescreen = drawing.choose_mode
 
     menu_lines = typescreen.split('\n')
