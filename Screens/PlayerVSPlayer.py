@@ -1,0 +1,160 @@
+import drawing
+import time
+
+
+def game(player1, player2):
+    from main import dice
+    pos1 = 0
+    pos2 = 0
+    p1Turn = True
+    print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, 0)
+
+    while True:
+
+        move = dice(pos1, pos2, 7, p1Turn, player1, player2, 0)
+
+        # Manejar bonuses y extensiones
+        if p1Turn:
+            pos1 += move
+
+            if pos1 == 8 or pos1 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = False
+        else:
+            pos2 += move
+
+            if pos2 == 8 or pos2 == 14 or move == 6:
+                print("BONUS")
+            else:
+                p1Turn = True
+
+        reset = print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        if pos1 > 20:
+            pos1 = 40 - pos1
+            reset = print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Posicion mayor a 20
+        elif pos2 > 20:
+            pos2 = 40 - pos2
+            reset = print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 1 come
+        if reset == -1:
+            pos2 = 0
+            print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Reseteo cuando el jugador 2 come
+        elif reset == 1:
+            pos1 = 0
+            print_PlayerVSPlayer(pos1, pos2, 7, p1Turn, player1, player2, move)
+
+        # Sistema de victoria
+        if pos1 == 20:
+            return player1
+        elif pos2 == 20:
+            return player2
+
+
+def print_PlayerVSPlayer(pos1, pos2, option, p1Turn, name1, name2, move):
+
+    from main import clear_console
+    clear_console()
+    reset = 0
+    gamescreen = drawing.gamescreen
+    menu_lines = gamescreen.split('\n')
+
+    # Escribir el texto de informacion
+    if option == 7:
+        choice = "NORMAL"
+    elif option == 36:
+        choice = "DEBIL"
+    else:
+        choice = "FUERTE"
+
+    # Tabla de informacion de las zonas exteriores
+    if p1Turn:
+
+        menu_lines[7] = menu_lines[7][:4] + "TURNO DEL JUGADOR:" + menu_lines[7][22:]
+        menu_lines[8] = menu_lines[8][:4] + name1 + menu_lines[8][4 + len(name1):]
+
+        menu_lines[13] = menu_lines[13][:4] + "DADO ELEGIDO:" + menu_lines[13][17:]
+        menu_lines[14] = menu_lines[14][:4] + choice + menu_lines[14][4 + len(choice):]
+
+        menu_lines[19] = menu_lines[19][:4] + "POSICION:" + menu_lines[19][4+len("POSICION:"):]
+        menu_lines[20] = menu_lines[20][:4] + f"(+{move})->[{pos1}]" + menu_lines[20][4 + len(f"(+{move})->[{pos1}]"):]
+
+    else:
+
+        menu_lines[7] = menu_lines[7][:67] + "TURNO DEL JUGADOR:" + menu_lines[7][68+len("TURNO DEL JUGADOR"):]
+        menu_lines[8] = menu_lines[8][:67] + name2 + menu_lines[8][67 + len(name2):]
+
+        menu_lines[13] = menu_lines[13][:67] + "DADO ELEGIDO:" + menu_lines[13][67+len("DADO ELEGIDO:"):]
+        menu_lines[14] = menu_lines[14][:67] + choice + menu_lines[14][67 + len(choice):]
+
+        menu_lines[19] = menu_lines[19][:67] + "POSICION:" + menu_lines[19][67+len("POSICION:"):]
+        menu_lines[20] = menu_lines[20][:67] + f"(+{move})->[{pos2}]" + menu_lines[20][67 + len(f"(+{move})->[{pos1}]"):]
+
+    # Cursor del dado
+    menu_lines[26] = menu_lines[26][:option] + '-> ' + menu_lines[26][3 + option:]
+
+    # Movimiento de las fichas
+    if pos1 == pos2:  # Cuando caen en la misma casilla
+        menu_lines[23 - pos1] = menu_lines[23 - pos1][:33] + "O" + \
+                                menu_lines[23 - pos1][34:55] + "X" + menu_lines[23 - pos1][56:]
+
+        # El Jugador 1 comio al Jugador 2
+        if not p1Turn and pos2 != 0:
+            for i in range(pos2, -1, -1):
+                if i >= 0:
+                    menu_lines[23 - i] = menu_lines[23 - i][:55] + "X" + menu_lines[23 - i][56:]
+                    print('\n'.join(menu_lines))
+                    time.sleep(0.2)
+                    menu_lines[23 - i] = menu_lines[23 - i][:55] + "-" + menu_lines[23 - i][56:]
+                    clear_console()
+                else:
+                    break
+            reset = -1
+
+        # El jugador 2 comio al jugador 1
+        elif p1Turn and pos1 != 0:
+            for i in range(pos1, -1, -1):
+                if i >= 0:
+                    menu_lines[23 - i] = menu_lines[23 - i][:33] + "O" + menu_lines[23 - i][34:]
+                    print('\n'.join(menu_lines))
+                    time.sleep(0.2)
+                    menu_lines[23 - i] = menu_lines[23 - i][:33] + "-" + menu_lines[23 - i][34:]
+                    clear_console()
+                else:
+                    break
+            reset = 1
+
+    elif pos1 != pos2:  # Cuando estan en distintas casillas
+        menu_lines[23 - pos1] = menu_lines[23 - pos1][:33] + "O" + menu_lines[23 - pos1][34:]
+        menu_lines[23 - pos2] = menu_lines[23 - pos2][:55] + "X" + menu_lines[23 - pos2][56:]
+
+    # Animacion para casillas mayores a 20
+    if pos1 > 20:
+        pos1c = 3
+        menu_lines[pos1c] = menu_lines[pos1c][:33] + "O" + menu_lines[pos1c][34:]
+        for i in range(pos1c, 4 + (pos1 % 20)):
+            menu_lines[i] = menu_lines[i][:33] + "O" + menu_lines[i][34:]
+            print('\n'.join(menu_lines))
+            time.sleep(0.3)
+            menu_lines[i] = menu_lines[i][:33] + "-" + menu_lines[i][34:]
+            clear_console()
+
+    elif pos2 > 20:
+        pos2c = 3
+        menu_lines[pos2c] = menu_lines[pos2c][:55] + "X" + menu_lines[pos2c][56:]
+        for i in range(pos2c, 4 + (pos2 % 20)):
+            menu_lines[i] = menu_lines[i][:55] + "X" + menu_lines[i][56:]
+            print('\n'.join(menu_lines))
+            time.sleep(0.3)
+            menu_lines[i] = menu_lines[i][:55] + "-" + menu_lines[i][56:]
+            clear_console()
+
+    print('\n'.join(menu_lines))
+    return reset
