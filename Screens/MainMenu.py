@@ -18,21 +18,19 @@ def main_menu():
 
         # Tecla flecha hacia abajo
         elif key == readchar.key.DOWN:
-            selected_option = min(5, selected_option + 1)
+            selected_option = min(6, selected_option + 1)
 
         # Tecla enter
         elif key == readchar.key.ENTER:
 
-            if selected_option == 1:
-                return 1
-            elif selected_option == 2:
-                return 2
-            elif selected_option == 3:
-                return 3
-            elif selected_option == 4:
-                return 4
-            else:
-                return -1
+            match selected_option:
+
+                case 1: return 1
+                case 2: return 2
+                case 3: return 3
+                case 4: return 4
+                case 5: return 5
+                case 6: return -1
 
 
 def print_menu(selected_option):
