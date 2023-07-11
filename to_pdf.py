@@ -46,13 +46,15 @@ def exportar_a_pdf(data, players_sorted, winners_by_month):
     c.drawString(50, espacio_restante, "Datos de los Jugadores:")
     espacio_restante -= 20  # Espacio vertical entre títulos y contenido
     for player in data:
+        month = player['creation_date'][:2]
+        year = player['creation-date'][2:]
         verificar_espacio(espacio_bloque)
         c.drawString(50, espacio_restante, f"Username: {player['username']}")
         c.drawString(50, espacio_restante - 20, f"Email: {player['email']}")
         c.drawString(50, espacio_restante - 40, f"Wins: {player['wins']}")
         c.drawString(50, espacio_restante - 60, f"Num Movements: {player['num_movements']}")
         c.drawString(50, espacio_restante - 80, f"Last Num Movements: {player['last_num_movements']}")
-        c.drawString(50, espacio_restante - 100, f"Creation Date: {player['creation_date']}")
+        c.drawString(50, espacio_restante - 100, f"Creation Date: {month}/{year}")
         c.drawString(50, espacio_restante - 120, f"Dates: {', '.join(player['date'])}")
         c.drawString(50, espacio_restante - 150, "-" * 100)
         espacio_restante -= espacio_bloque

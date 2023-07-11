@@ -33,6 +33,10 @@ def menu():
             # Mandamos a imprimir la opcion seleccionada
             print_menu(selected_option, confirmation)
 
+        # Espacio para salir al menu prinicipal
+        elif key == readchar.key.SPACE:
+            return
+
 
 def print_menu(selected_option, confirmation):
     record_menu = drawing.record

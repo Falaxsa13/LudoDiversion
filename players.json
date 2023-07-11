@@ -39,5 +39,32 @@
         "num_movements": 0,
         "last_num_movements": "",
         "creation_date": "072023"
+    },
+    {
+        "username": "Julio Yarasca",
+        "email": "julio.yarasca@utec.edu.pe",
+        "date": [],
+        "wins": 0,
+        "num_movements": 0,
+        "last_num_movements": "",
+        "creation_date": "072023"
+    },
+    {
+        "username": "tilin",
+        "email": "uwu@utec.edu.pe",
+        "date": [],
+        "wins": 0,
+        "num_movements": 0,
+        "last_num_movements": "",
+        "creation_date": "072023"
+    },
+    {
+        "username": "ti",
+        "email": "@utec.edu.pe",
+        "date": [],
+        "wins": 0,
+        "num_movements": 0,
+        "last_num_movements": "",
+        "creation_date": ""
     }
 ]

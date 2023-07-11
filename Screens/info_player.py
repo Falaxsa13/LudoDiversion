@@ -4,6 +4,9 @@ import drawing
 
 
 def player_datamenu(menu):
+    """
+    :param menu: String - Multistring to print
+    """
 
     email = sup = ""
     i = 1

@@ -4,7 +4,6 @@ from player_data import save_player, verify_player
 
 
 def player_datamenu(menu):
-
     name = email = dateMY = sup = ""
     i = j = k = 1
     confirm1 = confirm2 = False
@@ -56,28 +55,25 @@ def player_datamenu(menu):
 
                     save = save_player(name, f"{email}@utec.edu.pe", dateMY)
 
-                    return name, f"{email}@utec.edu.pe", dateMY, save
+                    return save, name, f"{email}@utec.edu.pe", dateMY
 
                 elif menu == drawing.verify:
 
                     verify = verify_player(name, f"{email}@utec.edu.pe")
 
-                    return name, f"{email}@utec.edu.pe", dateMY, verify
-                #"Nombre o correo incorrectos"
-                #"Jugador encontrado satisfactoriamente"
+                    return verify, name, f"{email}@utec.edu.pe", dateMY
 
         print_datamenu(menu, name, email, dateMY, i, j, k, sup)
 
 
 def print_datamenu(menu, name, email, date, i, j, k, sup):
-
     drawing.clear_console()
 
     menu_lines = menu.split('\n')
     menu_lines[9] = menu_lines[9][:30] + " " + name + "  " + menu_lines[9][32 + i:]
 
     if email != "":
-        menu_lines[11] = menu_lines[11][:30] + " " + email + sup + menu_lines[11][30+len(sup) + j:]
+        menu_lines[11] = menu_lines[11][:30] + " " + email + sup + menu_lines[11][30 + len(sup) + j:]
 
     if date != "":
 

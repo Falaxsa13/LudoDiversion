@@ -1,7 +1,7 @@
 import readchar
 
 import player_data
-from Screens import PlayerVSAi as PvA, MainMenu as Mn, register_login as rl, info_player as ip
+from Screens import PlayerVSAi as PvA, MainMenu as Mn, register_login, info_player as ip
 from Screens import record
 from drawing import clear_console
 import drawing
@@ -16,38 +16,43 @@ def regresar_menu():
             main()
 
 
+# Instrucciones
 def instrucciones():
-
     clear_console()
     print(drawing.instrucciones)
-    key = readchar.readkey()
-    if key == readchar.key.ENTER:
-        main()
 
 
+# Funcion principal que maneja el juego
 def main():
 
     again = True
-    option = Mn.main_menu()  # Guardar el valor de la opcion que seleccionaste en el menu principal
+
+    # Guardar el valor de la opcion que seleccionaste en el menu principal
+    option = Mn.main_menu()
     match option:
 
         case 1:  # Se selecciono "Empezar Juego"
 
-            name, email, date, ans = rl.player_datamenu(drawing.verify)  # Se verifica la cuenta del usuario
+            # Datos del jugador
+            ans, name, email, date = register_login.player_datamenu(drawing.verify)
 
-            if ans:  # Modo pendejo para saber si la validacion fue correcta
+            if ans:  # Validacion de datos
 
-                while again:
+                while again:  # Loop que nos permitira volver a jugar
 
+                    # Juego contra IA, devolviendo datos del juego
                     jugador_ganador, movements, last_movements = PvA.game_ai(name, 'AI')
 
-                    print(f"JUGADOR GANADOR: {jugador_ganador}")  # Se printea el nombre del jugador ganador
+                    # Se imprime el nombre del jugador ganador
+                    print(f"JUGADOR GANADOR: {jugador_ganador}")
 
+                    # Actualizamos las estadisticas si el jugador salio victorioso
                     if jugador_ganador == name:
                         player_data.update_stats(name, movements, date, last_movements)
 
                     print(f"Presiona ESPACIO para una revancha o ENTER para volver al menu principal")
 
+                    # Esperando confirmacion del input para tomar una accion definida arriba
                     while True:
                         key = readchar.readkey()
                         if key == readchar.key.ENTER:
@@ -59,19 +64,28 @@ def main():
 
             else:
                 print("Nombre o Correo incorrectos\nVolviendo al menu principal...")
-                regresar_menu()
 
-        case 2: rl.player_datamenu(drawing.register)  # Registrar nuevo jugador
+        case 2:
+            # Registrar nuevo jugador
+            save = register_login.player_datamenu(drawing.register)
 
-        case 3:
-            ip.player_datamenu(drawing.infoplayer)  # Info de Jugadores
-            regresar_menu()
+            match save[0]:
+                case 1:
+                    print("El nombre de usuario ya ha sido registrado.")
+                case 2:
+                    print("El correo electronico ya ha sido registrado.")
+                case 3:
+                    print("El usuario ha sido registrado satisfactoriamente!")
+
+        case 3: ip.player_datamenu(drawing.infoplayer)  # Info de Jugadores
 
         case 4: record.menu()  # Record de jugadores
 
         case 5: instrucciones()  # Instrucciones
 
         case 6: return -1  # Salir
+
+    regresar_menu()
 
 
 if __name__ == '__main__':
