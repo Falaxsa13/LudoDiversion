@@ -1,14 +1,19 @@
 import readchar
 
 import player_data
-from Screens import PlayerVSAi as PvA, MainMenu as Mn, register_login, info_player as ip
+from Screens import player_vs_ia
+from Screens import main_menu
+from Screens import register_login
+from Screens import info_player
 from Screens import record
-from drawing import clear_console
-import drawing
+
+from drawing import clear_console, verify, register, infoplayer, instrucciones
 
 
-# Funcion para regresar al menu principal
-def regresar_menu():
+def regresar_menu() -> None:
+    """
+    Returns to main menu
+    """
     print("\nPresiona enter para salir al menu principal ")
     while True:
         key = readchar.readkey()
@@ -16,58 +21,58 @@ def regresar_menu():
             main()
 
 
-# Instrucciones
-def instrucciones():
+def instrucciones_menu() -> None:
+    """
+    Shows instructions
+    """
     clear_console()
-    print(drawing.instrucciones)
+    print(instrucciones)
 
 
-# Funcion principal que maneja el juego
 def main():
 
-    again = True
+    # Saves selected option in main menu
+    option = main_menu.main_menu()
 
-    # Guardar el valor de la opcion que seleccionaste en el menu principal
-    option = Mn.main_menu()
     match option:
 
-        case 1:  # Se selecciono "Empezar Juego"
+        case 1:  # "Empezar Juego" was selected
 
-            # Datos del jugador
-            ans, name, email, date = register_login.player_datamenu(drawing.verify)
+            # Saves Player data in data_menu
+            ans, name, email, date = register_login.player_datamenu(verify)
 
-            if ans:  # Validacion de datos
+            # Data verification
+            if ans:
 
-                while again:  # Loop que nos permitira volver a jugar
+                while True:
 
-                    # Juego contra IA, devolviendo datos del juego
-                    jugador_ganador, movements, last_movements = PvA.game_ai(name, 'AI')
+                    # Saves IA game data
+                    jugador_ganador, movements, last_movements = player_vs_ia.game_ai(name)
 
-                    # Se imprime el nombre del jugador ganador
                     print(f"JUGADOR GANADOR: {jugador_ganador}")
 
-                    # Actualizamos las estadisticas si el jugador salio victorioso
+                    # Player stats update if wins
                     if jugador_ganador == name:
                         player_data.update_stats(name, movements, date, last_movements)
 
                     print(f"Presiona ESPACIO para una revancha o ENTER para volver al menu principal")
 
-                    # Esperando confirmacion del input para tomar una accion definida arriba
+                    # Waits confirmation for rematch/surrender
                     while True:
+
                         key = readchar.readkey()
                         if key == readchar.key.ENTER:
-                            again = False
                             main()
-                            break
+
                         elif key == readchar.key.SPACE:
                             break
 
             else:
                 print("Nombre o Correo incorrectos\nVolviendo al menu principal...")
 
-        case 2:
-            # Registrar nuevo jugador
-            save = register_login.player_datamenu(drawing.register)
+        case 2:  # "Registrar Jugador"
+
+            save = register_login.player_datamenu(register)
 
             match save[0]:
                 case 1:
@@ -77,13 +82,13 @@ def main():
                 case 3:
                     print("El usuario ha sido registrado satisfactoriamente!")
 
-        case 3: ip.player_datamenu(drawing.infoplayer)  # Info de Jugadores
+        case 3: info_player.player_datamenu(infoplayer)  # "Info de Jugadores"
 
-        case 4: record.menu()  # Record de jugadores
+        case 4: record.record_menu()  # "Record"
 
-        case 5: instrucciones()  # Instrucciones
+        case 5: instrucciones_menu()  # "Instrucciones"
 
-        case 6: return -1  # Salir
+        case 6: return -1  # "Salir"
 
     regresar_menu()
 

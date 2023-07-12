@@ -1,6 +1,9 @@
 # PROYECTO-PROGRAMACION-I
-# "Ludo Diversion"
 
-UTEC - Universidad de ingenieria y tecnologia
+# "Ludo Diversión"
 
-PROGRAMMING I - FIRST SEMESTER PROJECT 
+UTEC - Universidad de ingeniería y tecnología
+
+PROGRAMMING I - First semester final project
+
+Using fundamental python programming techniques, we created a simple "ludo" game.

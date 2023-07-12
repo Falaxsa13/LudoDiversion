@@ -1,66 +1,86 @@
 import json
 
+'''
+The JSON file contains a list of player objects, where each player is represented by a dictionary with various fields. 
+The fields include:
+- "username": Represents the player's username.
+- "email": Represents the player's email address.
+- "date": Represents a list of unique victory dates in the format "mm/yyyy".
+- "wins": Represents the number of wins the player has achieved.
+- "num_movements": Represents the total number of movements made by the player.
+- "last_num_movements": Represents the number of movements made by the player in the last game.
+- "creation_date": Represents the date when the player's account was created.
+'''
 
-def read_players():
 
+def read_players() -> list:
+    """
+    Reads player JSON
+    """
     with open('players.json', 'r') as file:
         return json.load(file)
 
 
-def save_player(name, email, date):
+def save_player(name, email, date) -> int:
     """
-    :param name: Nombre del jugador
-    :param email: Correo del jugador
-    :param date: Fecha de creacion de usuario
-    :return string: mensaje con el estado del registro dependiendo de los datos de entrada
+    Saves a new player into the Json file.
+
+    :param name: Player name
+    :param email: Player email
+    :param date: Player Creation date
+    :return: Integer indicating the function status
+            1: Username already exists
+            2: Email has already been registered
+            3: Successful Player Registration
     """
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
 
-    # Verificar si el nombre de usuario o el correo electrónico ya existen
+    # Check if username or email already exist
     for player in data:
         if player["username"] == name:
-            # 1 = Nombre de usuario ya existente
-            return 1
+
+            return 1  # Username already exists
 
         if player["email"] == email:
-            # 2 = El correo electronico ya ha sido registrado
-            return 2
 
-    # Crear un nuevo player JSON con los argumentos proporcionados
+            return 2  # Email has already been registered
+
+    # New Player Object ( Dictionary )
     new_player = {
         "username": name,
         "email": email,
-        "date": [],  # Lista que contiene fechas unicas de cada victoria (mm/yyyy)
+        "date": [],
         "wins": 0,
         "num_movements": 0,
         "last_num_movements": "",
         "creation_date": date
     }
 
-    # Agregar el nuevo objeto a la lista de datos
+    # Add Object to data list
     data.append(new_player)
 
-    # Escribir los datos actualizados en el archivo JSON
+    # Write updated data to JSON
     with open('players.json', 'w') as file:
         json.dump(data, file, indent=4)
 
-    # 3 = Jugador registrado satisfactoriamente!
+    # 3 = Successful Player Registration
     return 3
 
 
-def verify_player(name, email):
+def verify_player(name: str, email: str) -> bool:
     """
-    :param name: Nombre del jugador
-    :param email: Correo del jugador
-    :return Bool: True o False depediendo si el jugador fue verificado
+    Verify if player exists by  by email and name
+    :param name: Player Name
+    :param email: Player Email
+    :return Bool: Verification status
     """
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
 
-    # Verificar si el nombre de usuario y correo electrónico existen en la base de datos
+    # Verify if player exsits in data
     for player in data:
         if player['username'] == name and player["email"] == email:
             return True
@@ -68,93 +88,97 @@ def verify_player(name, email):
     return False
 
 
-def fetch_player(email):
+def fetch_player(email: str) -> dict:
     """
-    :param email: Correo a verificar
-    :return Json: datos del jugador
+    :param email: Email to verify
+    :return Json: Player data
     """
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
 
-    # Buscar jugador por correo electrónico
+    # Search player by email
     for player in data:
         if player['email'] == email:
             return player
 
-    return "Jugador no encontrado"
+    return {}
 
 
-def movement_sort():
+def movement_sort() -> list:
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
 
-    # Ordenar los datos por el número de movimientos en orden decreciente
+    # Sort the data by number of movements decreasingly
     sorted_data = sorted(data, key=lambda x: x['num_movements'], reverse=True)
 
-    # Retornar los datos ordenados
+    # Return the sorted data
     return sorted_data
 
 
-def winners_by_month():
+def winners_by_month() -> dict:
     """
     :return Dic:
     key -> Meses del año
     Value -> Jugadores victoriosos en cada key ( Mes )
     """
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
 
-    # Inicializar la lista de ganadores por mes
+    # Initialize winners dictionary
     winners = {}
 
-    # Recorrer los datos y almacenar los ganadores en el mes correspondiente
+    # Iterate through the data and store the winners in the corresponding month inside the dictionary
     for player in data:
         for date in player['date']:
 
-            # Separar el mes de la fecha de la victoria del jugador
+            # Separate the month of the victory date of player
             month = date[:2]
 
-            # Inicializar el key, value del diccionario
+            # Initialize (key, value) dictionary
             if month not in winners:
                 winners[month] = []
 
-            # Añadir la fecha de la victoria del jugador al diccionario
+            # Add the player to the corresponding month
             winners[month].append(player['username'])
 
     return winners
 
 
-def update_stats(player_name, movements, date, last_movements):
+def update_stats(player_name: str, movements: int, date: str, last_movements: str) -> None:
     """
-    :param player_name: Nombre del jugador para actualizar
-    :param movements:  Movimientos realizados por el jugador durante el juego
-    :param date: Fecha de la victoria
+    :param player_name: Player name to update
+    :param movements: Movements made by the player during the game
+    :param date: Victory date
+    :param last_movements: String that contains the exact movements made by player in the last game
     :return:
     """
 
-    # Cargar datos existentes desde el archivo JSON
+    # Load existing data from JSON file
     data = read_players()
     player_to_update = data[0]
 
-    # Buscar jugador por nombre
+    # Find player by name
     for player in data:
         if player['username'] == player_name:
             player_to_update = player
             break
 
-    # Actualizar las estadisticas del jugador
+    # Update player's statistics
     player_to_update['wins'] += 1
     player_to_update['num_movements'] += movements
     player_to_update['last_num_movements'] = last_movements
 
-    # Añadir la fecha de victoria si aun no existe en la lista
+    # Add victory date if it doesn't already exist in the list
     if date not in player_to_update['date']:
-
         player_to_update['date'].append(date)
 
-    # Sobrescribir los datos actualizados en el archivo JSON
+    # Overwrite the updated data to the JSON file
     with open('players.json', 'w') as file:
         json.dump(data, file, indent=4)
+
+
+
+
