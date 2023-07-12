@@ -118,6 +118,6 @@ def print_record_menu(selected_option: int, confirmation: int) -> None:
 
     # Exports in PDF format
     elif confirmation == 3:
-        to_pdf.exportar_a_pdf(read_players(), movement_sort(), winners_by_month())
+        to_pdf.export_to_pdf(read_players(), movement_sort(), winners_by_month())
 
     print('\n'.join(menu_lines))

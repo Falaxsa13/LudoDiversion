@@ -178,7 +178,3 @@ def update_stats(player_name: str, movements: int, date: str, last_movements: st
     # Overwrite the updated data to the JSON file
     with open('players.json', 'w') as file:
         json.dump(data, file, indent=4)
-
-
-
-

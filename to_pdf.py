@@ -88,4 +88,3 @@ def export_to_pdf(data, players_sorted, winners_by_month):
 
     # Save the PDF file
     c.save()
-
