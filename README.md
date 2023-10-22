@@ -4,12 +4,12 @@ Welcome to the UTEC Ludo Game project! This is the final project for the first s
 
 ## Table of Contents
 
-- [Instructions](#instructions)
+- [Information & PDF's](#instructions)
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
 
-## Instructions
+## Information & PDF's
 
 For detailed instructions on how to play the game and project information, please refer to the following PDF documents:
 
