@@ -30,22 +30,20 @@ def instrucciones_menu() -> None:
 
 
 def main():
-
+    """
+    Main function that runs the game
+    """
     # Saves selected option in main menu
     option = main_menu.main_menu()
 
     match option:
-
         case 1:  # "Empezar Juego" was selected
-
             # Saves Player data in data_menu
             ans, name, email, date = register_login.player_datamenu(verify)
 
             # Data verification
             if ans:
-
                 while True:
-
                     # Saves IA game data
                     jugador_ganador, movements, last_movements = player_vs_ia.game_ai(name)
 
@@ -59,19 +57,15 @@ def main():
 
                     # Waits confirmation for rematch/surrender
                     while True:
-
                         key = readchar.readkey()
                         if key == readchar.key.ENTER:
                             main()
-
                         elif key == readchar.key.SPACE:
                             break
-
             else:
                 print("Nombre o Correo incorrectos\nVolviendo al menu principal...")
 
         case 2:  # "Registrar Jugador"
-
             save = register_login.player_datamenu(register)
 
             match save[0]:

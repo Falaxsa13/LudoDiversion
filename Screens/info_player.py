@@ -1,4 +1,4 @@
-from player_data import fetch_player
+from player_data import fetch_playerF
 import drawing
 import readchar
 
@@ -21,7 +21,6 @@ def player_datamenu(menu: str) -> None:
 
         # Backspace case
         if key == readchar.key.BACKSPACE:
-
             email = email[:-1]
 
         # Normal Type case
@@ -65,7 +64,7 @@ def print_menu(menu: str, email: str, domain: str) -> None:
 
     # Inserting email in screen
     if email != "":
-        menu_lines[9] = menu_lines[9][:30] + " " + email + domain + menu_lines[9][31 + len(email) + len(domain):]
+        menu_lines[9] = f"{menu_lines[9][:30]} {email}{domain}{menu_lines[9][31 + len(email) + len(domain):]}"
 
     print('\n'.join(menu_lines))
 
@@ -87,11 +86,12 @@ def print_data(menu: str, player: dict) -> None:
     last_num_movements = str(player["last_num_movements"])
 
     # Inserting data in screen
-    menu_lines[17] = menu_lines[17][:30] + " " + name + menu_lines[17][31+len(name):]
-    menu_lines[18] = menu_lines[18][:33] + " " + wins + menu_lines[18][34 + len(wins):]
-    menu_lines[19] = menu_lines[19][:43] + " " + num_movements + menu_lines[19][44 + len(num_movements):]
-    menu_lines[20] = menu_lines[20][:29] + " " + f"{date[:2]}/{date[2:]}" + menu_lines[20][31 + len(date):]
-    menu_lines[22] = menu_lines[22][:22] + " " + last_num_movements + menu_lines[22][23 + len(last_num_movements):]
+    menu_lines[17] = f"{menu_lines[17][:30]} {name}{menu_lines[17][31+len(name):]}"
+    menu_lines[18] = f"{menu_lines[18][:33]} {wins}{menu_lines[18][34 + len(wins):]}"
+    menu_lines[19] = f"{menu_lines[19][:43]} {num_movements}{menu_lines[19][44 + len(num_movements):]}"
+    menu_lines[20] = f"{menu_lines[20][:29]} {date[:2]}/{date[2:]}{menu_lines[20][31 + len(date):]}"
+    menu_lines[22] = f"{menu_lines[22][:22]} {last_num_movements}{menu_lines[22][23 + len(last_num_movements):]}"
 
     # Priting the string menu
     print('\n'.join(menu_lines))
+a
